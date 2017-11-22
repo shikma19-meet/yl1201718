@@ -16,7 +16,7 @@ unicorn.eat(" rainbows")
 unicorn.description()
 unicorn.make_sound("ahhhhh")
 class person (object):
-	def __init__(self,name,age,city,gender,hair_color,favorite_food,sleep_time):
+	def __init__(self,name,age,city,gender,hair_color,favorite_food,sleep_time):B
 		self.name = name
 		self.age = age 
 		self.city = city
