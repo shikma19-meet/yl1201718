@@ -1,9 +1,10 @@
 from  turtle import *
 import random 
+import math
 
 
 
-def Ball(Turtle):
+class Ball(Turtle):
 	def __init__ (self,x,y,dx,dy,radius,color):
 			Turtle.__init__(self)
 			self.pu()
@@ -14,8 +15,7 @@ def Ball(Turtle):
 			self.shapesize(radius/10)
 			self.radius = radius
 			self.color = color
-			self.color(color)
-	def move(self):
+	def move(self,height,width):
 		currentx = self.xcor()
 		newx = currentx + dx
 		currenty = self.ycor()
@@ -24,6 +24,13 @@ def Ball(Turtle):
 		left_side_ball = currentx - radius
 		upper_side_ball = currenty + radius
 		lower_side_ball = currenty - radius
+		if (upper_side_ball >= height or 
+			lower_side_ball <= -height):
+			newy = currenty - dy
+		if (right_side_ball >= width or
+			left_side_ball <= -width):
+			newx = currentx - dx
+
 		self.goto(newx, newy)
 
 	
@@ -44,5 +51,25 @@ def random_color():
 	r = random.randint(0,256) 
 	g = random.randint(0,256)
 	b = random.randint(0,256)
-	self.color((r,g,b))
 	return (r,g,b)
+
+
+
+def collide(ball1,ball2):
+	if ball1 == ball2:
+		return False
+	distance = math.sqrt(math.pow(ball1.xcor()-ball2.xcor(),2)+math.pow(ball1.ycor()-ball2.ycor(),2))
+	if distance +10 <= ball1.radius + ball2.radius :
+		return True 
+	else:
+		return False 
+
+
+
+
+
+
+ 
+
+
+
