@@ -24,15 +24,18 @@ sleep = 0.0077
 SCREEN_WIDTH = turtle.getcanvas().winfo_width()/2
 SCREEN_HEIGHT = turtle.getcanvas().winfo_height()/2
 
-MY_BALL = Ball(5,5,2,6,10,"pink") 
+MY_BALL = Ball(5,5,0,0,29,"pink") 
 
-NUMBER_OF_BALLS = 6
+
+NUMBER_OF_BALLS = 4
 MINIMUM_BALL_RADIUS = 10
-MAXIMUM_BALL_RADIUS = 100
+MAXIMUM_BALL_RADIUS = 30
 MINIMUM_BALL_DX = -5
 MAXIMUM_BALL_DX = 5
 MINIMUM_BALL_DY = -5
 MAXIMUM_BALL_DY = 5 
+last_haert = time.time()
+amount_of_lives = 5
 
 BALLS = []
 for i in range(NUMBER_OF_BALLS):
@@ -103,6 +106,7 @@ def check_myball_collision():
 			my_radius = MY_BALL.radius
 			enemy_radius = each_ball.radius 
 			if MY_BALL.radius < each_ball.radius:
+				each_ball.goto(each_ball.x + 50 , each_ball.y + 50)
 				return False
 				#exit()
 			else:
@@ -118,9 +122,16 @@ def check_myball_collision():
 				color = random_color()
 				MY_BALL.radius = my_radius + 1
 				MY_BALL.shapesize(MY_BALL.radius/10)
-				each_ball = Ball(x,y,dx,dy,radius,color)
-				return True
-
+				each_ball.x = x 
+				each_ball.y = y
+				each_ball.dx = dx
+				each_ball.dy = dy
+				each_ball.radius = radius
+				each_ball.shade = color
+				each_ball.color(color)
+				each_ball.goto(x,y)
+				each_ball.shapesize(each_ball.radius/10)
+				
 
 def movearound(event):
 	MY_BALL.goto(event.x - SCREEN_WIDTH,SCREEN_HEIGHT - event.y)
@@ -135,15 +146,46 @@ while Running == True:
 	if SCREEN_HEIGHT != turtle.getcanvas().winfo_height()/2:
 		SCREEN_HEIGHT = turtle.getcanvas().winfo_height()/2
 
+	if MY_BALL.radius > MAXIMUM_BALL_RADIUS:
+		turtle.color("blue")
+		turtle.write("you won,good job!", font=("Arial", 16, "normal"))
+		print(MY_BALL.radius)
+		time.sleep(3)
+		quit()
+
+
+
 	move_all_balls()
 	MY_BALL.move(SCREEN_WIDTH,SCREEN_HEIGHT)
 	if check_myball_collision() == False:
 		Running = False
 	else:
 		Running = True
-	turtle.getscreen().update()
-	time.sleep(0.077)
+		turtle.getscreen().update()
+		time.sleep(0.077)
 
-	check_all_balls_collision()
-	turtle.getscreen().update()
+		check_all_balls_collision()
+		turtle.getscreen().update()
 	
+	if Running == False:
+		print(amount_of_lives)
+		amount_of_lives = amount_of_lives -1 
+		Running = True
+	if amount_of_lives <= 0:
+		turtle.color("orange")
+		turtle.goto(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 75)
+		turtle.write("you're out of lives, you die!", font=("Arial", 16, "normal"))
+		time.sleep(3)
+		quit()
+
+	starting_time = time.time()
+	if last_haert + 30 < time.time():
+		amount_of_lives = amount_of_lives + 1
+		last_haert = time.time()
+		print(amount_of_lives)
+	turtle.pu()
+	turtle.goto(SCREEN_WIDTH-300,SCREEN_HEIGHT-75)
+	turtle.clear()
+	turtle.write(amount_of_lives, font=("Arial", 16, "normal"))
+
+
