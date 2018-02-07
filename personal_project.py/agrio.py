@@ -24,18 +24,26 @@ sleep = 0.0077
 SCREEN_WIDTH = turtle.getcanvas().winfo_width()/2
 SCREEN_HEIGHT = turtle.getcanvas().winfo_height()/2
 
-MY_BALL = Ball(5,5,0,0,29,"pink") 
+MY_BALL = Ball(5,5,0,0,25,"pink") 
 
 
 NUMBER_OF_BALLS = 4
 MINIMUM_BALL_RADIUS = 10
 MAXIMUM_BALL_RADIUS = 30
-MINIMUM_BALL_DX = -5
-MAXIMUM_BALL_DX = 5
+MINIMUM_BALL_DX = -10
+MAXIMUM_BALL_DX = 10
 MINIMUM_BALL_DY = -5
 MAXIMUM_BALL_DY = 5 
 last_haert = time.time()
 amount_of_lives = 5
+score = 0
+writescore = turtle.clone()
+writescore.color("orange")
+writescore.ht()
+before_writescore = turtle.clone()
+before_writescore.color("orange")
+before_writescore.ht()
+
 
 BALLS = []
 for i in range(NUMBER_OF_BALLS):
@@ -110,6 +118,7 @@ def check_myball_collision():
 				return False
 				#exit()
 			else:
+				global score 
 				x = random.randint(int(-SCREEN_WIDTH + MAXIMUM_BALL_RADIUS) , int(SCREEN_WIDTH - MAXIMUM_BALL_RADIUS))
 				y = random.randint(int(-SCREEN_HEIGHT + MAXIMUM_BALL_RADIUS) , int(SCREEN_HEIGHT - MAXIMUM_BALL_RADIUS))
 				dx = random.randint(int(MINIMUM_BALL_DX),int(MAXIMUM_BALL_DX))
@@ -131,6 +140,15 @@ def check_myball_collision():
 				each_ball.color(color)
 				each_ball.goto(x,y)
 				each_ball.shapesize(each_ball.radius/10)
+				score = score + 1
+				writescore.goto(SCREEN_WIDTH-100,SCREEN_HEIGHT-75)
+				writescore.clear()
+				writescore.write(score, font=("Arial", 16, "normal"))
+				before_writescore.goto(SCREEN_WIDTH-170,SCREEN_HEIGHT-75)
+				before_writescore.clear()
+				before_writescore.write("score:", font=("Arial", 16, "normal"))
+
+
 				
 
 def movearound(event):
@@ -147,6 +165,7 @@ while Running == True:
 		SCREEN_HEIGHT = turtle.getcanvas().winfo_height()/2
 
 	if MY_BALL.radius > MAXIMUM_BALL_RADIUS:
+		turtle.goto(SCREEN_WIDTH/2-75,SCREEN_HEIGHT/2)
 		turtle.color("blue")
 		turtle.write("you won,good job!", font=("Arial", 16, "normal"))
 		print(MY_BALL.radius)
@@ -184,8 +203,12 @@ while Running == True:
 		last_haert = time.time()
 		print(amount_of_lives)
 	turtle.pu()
-	turtle.goto(SCREEN_WIDTH-300,SCREEN_HEIGHT-75)
+	turtle.goto(SCREEN_WIDTH-380,SCREEN_HEIGHT-75)
 	turtle.clear()
+	turtle.color("orange")
+	turtle.write("Lives:", font=("Arial", 16, "normal"))
+	turtle.goto(SCREEN_WIDTH-300,SCREEN_HEIGHT-75)
 	turtle.write(amount_of_lives, font=("Arial", 16, "normal"))
+
 
 
